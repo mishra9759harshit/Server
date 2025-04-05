@@ -1,17 +1,15 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
+require("dotenv").config();
+
 const PORT = process.env.PORT || 3000;
 
-// Optional: Middleware
+app.use(cors()); // ✅ Allow cross-origin requests
 app.use(express.json());
 
-// ✅ Define route for "/"
-app.get("/", (req, res) => {
-  res.send("🚀 Node server is running!");
-});
-
-// Your other routes...
-app.post("/firebase-config", (req, res) => {
+// ✅ Your Firebase Config Endpoint
+app.get("/firebase-config", (req, res) => {
   res.json({
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -23,7 +21,11 @@ app.post("/firebase-config", (req, res) => {
   });
 });
 
-// Start server
+// Optional: Home route
+app.get("/", (req, res) => {
+  res.send("Server is working.");
+});
+
 app.listen(PORT, () => {
-  console.log(`🔥 Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
