@@ -1,31 +1,14 @@
 const express = require("express");
 const cors = require("cors");
+const app = express();
 require("dotenv").config();
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
-const allowedOrigins = [
-  'http://127.0.0.1:3000/',
-  'bareillycollegebareilly.vercel.app'
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('❌ Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
-
+app.use(cors()); // ✅ Allow cross-origin requests
 app.use(express.json());
 
+// ✅ Your Firebase Config Endpoint
 app.get("/firebase-config", (req, res) => {
   res.json({
     apiKey: process.env.FIREBASE_API_KEY,
@@ -38,8 +21,9 @@ app.get("/firebase-config", (req, res) => {
   });
 });
 
+// Optional: Home route
 app.get("/", (req, res) => {
-  res.send("✅ Server is working.");
+  res.send("Server is working.");
 });
 
 app.listen(PORT, () => {
